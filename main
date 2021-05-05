@@ -1,3 +1,4 @@
+
 no_of_applicants = int(input())
 applicants_file = open('applicants.txt', 'r')
 applications = []
@@ -10,23 +11,26 @@ university = {'Biotech': [],
               'Mathematics': [],
               'Physics': []
               }
-sorted_applications = applications
 
-for i in range(3, 6):
-    sorted_applications.sort(key=lambda x: (-float(x[2]), x[0], x[1], x[i]))
+sorted_applications = applications
+dct = {'Biotech': 3, 'Chemistry': 3, 'Engineering': 5,
+           'Mathematics': 4, 'Physics': 2}
+
+for i in range(6, 9): 
+    sorted_applications.sort(key=lambda x: (x[i], -int(x[dct[x[i]]]), x[0], x[1]))
     sorted_iter = iter(sorted_applications)
     sorted_applications = []
     for item in sorted_iter:
-        for dep in item[3:i+1]:
+        for dep in item[6:i+1]:
             if len(university[dep]) < no_of_applicants:
-                university[dep].append(item[:3])
+                university[dep].append([item[0], item[1], item[dct[dep]]])
                 break
         else:
             sorted_applications.append(item)
             
 for dept, students in university.items():
     print(dept)
-    students.sort(key=lambda x: (-float(x[2]), x[0], x[1]))
+    students.sort(key=lambda x: (-int(x[2]), x[0], x[1]))
     for student in students:
         print(*student)
 applicants_file.close()
