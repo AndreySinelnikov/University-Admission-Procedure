@@ -1,9 +1,15 @@
-exam1 = int(input())
-exam2 = int(input())
-exam3 = int(input())
-mean_score = (exam1 + exam2 + exam3) / 3
-print(mean_score)
-if mean_score >= 60:
-    print("Congratulations, you are accepted!")
-else:
-    print("We regret to inform you that we will not be able to offer you admission.")
+applicant_num = int(input())
+accepted_num = int(input())
+mainlist = []
+
+for _ in range(applicant_num):
+    entry = input().split(" ")
+    fullname = f"{entry[0]} {entry[1]}"
+    gpa = float(entry[2])
+    mainlist.append([f"{gpa:.2f}", fullname])
+
+mainlist.sort(key=lambda x: (-float(x[0]), x[1]))
+
+print("Successful applicants:")
+for elem in mainlist[0:accepted_num]:
+    print(elem[1])
