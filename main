@@ -1,15 +1,32 @@
-applicant_num = int(input())
-accepted_num = int(input())
-mainlist = []
+no_of_applicants = int(input())
+applicants_file = open('applicants.txt', 'r')
+applications = []
 
-for _ in range(applicant_num):
-    entry = input().split(" ")
-    fullname = f"{entry[0]} {entry[1]}"
-    gpa = float(entry[2])
-    mainlist.append([f"{gpa:.2f}", fullname])
+for line in applicants_file:
+    applications.append(line.split())
+university = {'Biotech': [],
+              'Chemistry': [],
+              'Engineering': [],
+              'Mathematics': [],
+              'Physics': []
+              }
+sorted_applications = applications
 
-mainlist.sort(key=lambda x: (-float(x[0]), x[1]))
-
-print("Successful applicants:")
-for elem in mainlist[0:accepted_num]:
-    print(elem[1])
+for i in range(3, 6):
+    sorted_applications.sort(key=lambda x: (-float(x[2]), x[0], x[1], x[i]))
+    sorted_iter = iter(sorted_applications)
+    sorted_applications = []
+    for item in sorted_iter:
+        for dep in item[3:i+1]:
+            if len(university[dep]) < no_of_applicants:
+                university[dep].append(item[:3])
+                break
+        else:
+            sorted_applications.append(item)
+            
+for dept, students in university.items():
+    print(dept)
+    students.sort(key=lambda x: (-float(x[2]), x[0], x[1]))
+    for student in students:
+        print(*student)
+applicants_file.close()
