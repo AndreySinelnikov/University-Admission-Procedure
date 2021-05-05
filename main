@@ -1,0 +1,6 @@
+exam1 = int(input())
+exam2 = int(input())
+exam3 = int(input())
+mean_score = (exam1 + exam2 + exam3) / 3
+print(mean_score)
+print("Congratulations, you are accepted!")
