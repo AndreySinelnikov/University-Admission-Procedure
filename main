@@ -1,9 +1,11 @@
 
 no_of_applicants = int(input())
-applicants_file = open('applicants.txt', 'r')
-applications = []
-for line in applicants_file:
-    applications.append(line.split())
+
+with open('applicants.txt', 'r') as applicants_file:
+    applications = []
+    for line in applicants_file:
+        applications.append(line.split())
+
 university = {'Biotech': [],
               'Chemistry': [],
               'Engineering': [],
@@ -11,27 +13,26 @@ university = {'Biotech': [],
               'Physics': []
               }
 
-sorted_applications = applications
-
-def get_composite_score(app_list, key):
+def get_sorting_grade(app_list, key):
     dct = {'Biotech': (3, 2), 'Chemistry': (3, 3), 'Engineering': (4, 5),
            'Mathematics': (4, 4), 'Physics': (2, 4)}
-    return (float(app_list[dct[key][0]]) + float(app_list[dct[key][1]])) / 2
+    exam_mean = (float(app_list[dct[key][0]]) + float(app_list[dct[key][1]])) / 2
+    return exam_mean if exam_mean > float(app_list[6]) else float(app_list[6])
 
-for i in range(6, 9):
-    sorted_applications.sort(key=lambda x: (x[i],
-                                            -(get_composite_score(x, x[i])),                                           
-                                            x[0], x[1]))
-    sorted_iter = iter(sorted_applications)
-    sorted_applications = []
+for i in range(7, 10):
+    applications.sort(key=lambda item: (item[i],
+                                            -(get_sorting_grade(item, item[i])),
+                                            item[0], item[1]))
+    sorted_iter = iter(applications)
+    applications = []
     for item in sorted_iter:
-        for dep in item[6:i+1]:
+        for dep in item[7:i+1]:
             if len(university[dep]) < no_of_applicants:
                 university[dep].append([item[0], item[1],
-                                        get_composite_score(item, item[i])])
+                get_sorting_grade(item, item[i])])
                 break
         else:
-            sorted_applications.append(item)
+            applications.append(item)
 
 for dept, students in university.items():
     with open(f"{dept.lower()}.txt", "w") as output:
