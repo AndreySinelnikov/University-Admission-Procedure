@@ -3,4 +3,7 @@ exam2 = int(input())
 exam3 = int(input())
 mean_score = (exam1 + exam2 + exam3) / 3
 print(mean_score)
-print("Congratulations, you are accepted!")
+if mean_score >= 60:
+    print("Congratulations, you are accepted!")
+else:
+    print("We regret to inform you that we will not be able to offer you admission.")
